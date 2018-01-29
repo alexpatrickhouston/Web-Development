@@ -18,11 +18,18 @@ namespace Week4_WebApp1.Controllers
         [HttpPost]
         public ActionResult Create(UserViewModel userViewModel)
         {
-            var user = MapToUser(userViewModel);
+            if (ModelState.IsValid)
+            {
+                var user = MapToUser(userViewModel);
 
-            Save(user);
+                Save(user);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult List()
