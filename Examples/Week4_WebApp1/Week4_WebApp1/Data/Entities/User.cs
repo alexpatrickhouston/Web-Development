@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Week4_WebApp1.Data.Entities
@@ -20,5 +22,7 @@ namespace Week4_WebApp1.Data.Entities
         public DateTime DateOfBirth { get; set; }
 
         public int YearsInSchool { get; set; }
+
+        public ICollection<Pet> Pets { get; set; }
     }
 }
