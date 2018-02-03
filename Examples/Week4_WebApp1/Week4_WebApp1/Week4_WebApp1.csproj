@@ -151,6 +151,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\AppDbContext.cs" />
+    <Compile Include="Data\Entities\Pet.cs" />
     <Compile Include="Data\Entities\User.cs" />
     <Compile Include="Data\InMemoryDatabase.cs" />
     <Compile Include="Global.asax.cs">
@@ -199,6 +200,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\List.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

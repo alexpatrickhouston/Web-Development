@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using Week4_WebApp1.Data;
 using Week4_WebApp1.Data.Entities;
@@ -9,6 +8,13 @@ namespace Week4_WebApp1.Controllers
 {
     public class UserController : Controller
     {
+        public ActionResult List()
+        {
+            var users = GetAllUsers();
+
+            return View(users);
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -22,7 +28,7 @@ namespace Week4_WebApp1.Controllers
             {
                 var user = MapToUser(userViewModel);
 
-                Save(user);
+                SaveUser(user);
 
                 return RedirectToAction("List");
             }
@@ -31,12 +37,33 @@ namespace Week4_WebApp1.Controllers
                 return View();
             }
         }
-
-        public ActionResult List()
+        
+        public ActionResult Details(int id)
         {
-            var users = GetAllUsers();
+            var user = GetUser(id);
 
-            return View(users);
+            return View(user);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var user = GetUser(id);
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(UserViewModel userViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                UpdateUser(userViewModel);
+
+                return RedirectToAction("List");
+            }
+
+            return View();
         }
 
         public ActionResult Delete(int id)
@@ -46,34 +73,14 @@ namespace Week4_WebApp1.Controllers
             return RedirectToAction("List");
         }
 
-        //private void Save(User user)
-        //{
-        //    user.Id = InMemoryDatabase.NextId();
-        //    InMemoryDatabase.Users.Add(user);
-        //}
-
-        private void Save(User user)
+        private UserViewModel GetUser(int id)
         {
             var dbContext = new AppDbContext();
 
-            dbContext.Users.Add(user);
+            var user = dbContext.Users.Find(id);
 
-            dbContext.SaveChanges();
+            return MapToUserViewModel(user);
         }
-
-        //private IEnumerable<UserViewModel> GetAllUsers()
-        //{
-        //    var userViewModels = new List<UserViewModel>();
-
-        //    var users = InMemoryDatabase.Users;
-        //    foreach (var user in users)
-        //    {
-        //        var userViewModel = MapToUserViewModel(user);
-        //        userViewModels.Add(userViewModel);
-        //    }
-
-        //    return userViewModels;
-        //}
 
         private IEnumerable<UserViewModel> GetAllUsers()
         {
@@ -81,9 +88,7 @@ namespace Week4_WebApp1.Controllers
 
             var dbContext = new AppDbContext();
 
-            var users = dbContext.Users;
-
-            foreach (var user in users)
+            foreach (var user in dbContext.Users)
             {
                 var userViewModel = MapToUserViewModel(user);
                 userViewModels.Add(userViewModel);
@@ -92,18 +97,31 @@ namespace Week4_WebApp1.Controllers
             return userViewModels;
         }
 
-        //private void DeleteUser(int id)
-        //{
-        //    InMemoryDatabase.DeleteUser(id);
-        //}
+        private void SaveUser(User user)
+        {
+            var dbContext = new AppDbContext();
+
+            dbContext.Users.Add(user);
+
+            dbContext.SaveChanges();
+        }
+
+        private void UpdateUser(UserViewModel userViewModel)
+        {
+            var dbContext = new AppDbContext();
+
+            var user = dbContext.Users.Find(userViewModel.Id);
+
+            CopyToUser(userViewModel, user);
+
+            dbContext.SaveChanges();
+        }
 
         private void DeleteUser(int id)
         {
             var dbContext = new AppDbContext();
 
-            var users = dbContext.Users;
-
-            var user = users.SingleOrDefault(u => u.Id == id);
+            var user = dbContext.Users.Find(id);
 
             if (user != null)
             {
@@ -138,6 +156,16 @@ namespace Week4_WebApp1.Controllers
                 DOB = user.DateOfBirth,
                 YearsInSchool = user.YearsInSchool
             };
+        }
+
+        private void CopyToUser(UserViewModel userViewModel, User user)
+        {
+            user.FirstName = userViewModel.FirstName;
+            user.MiddleName = userViewModel.MiddleName;
+            user.LastName = userViewModel.LastName;
+            user.EmailAddress = userViewModel.EmailAddress;
+            user.DateOfBirth = userViewModel.DOB;
+            user.YearsInSchool = userViewModel.YearsInSchool;
         }
     }
 }

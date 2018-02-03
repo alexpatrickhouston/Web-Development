@@ -16,6 +16,7 @@ namespace Week4_WebApp1.Data
         }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Pet> Pets { get; set; }
     }
 
     public class AppDbInitializer : DropCreateDatabaseIfModelChanges<AppDbContext>
