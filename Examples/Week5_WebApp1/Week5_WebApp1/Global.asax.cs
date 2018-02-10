@@ -14,6 +14,8 @@ namespace Week5_WebApp1
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DependencyInjectionConfig.Register();
+
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

@@ -9,10 +9,10 @@ namespace Week4_WebApp1
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "PetListCreate",
-                url: "{controller}/{action}/{userId}"
-            );
+//            routes.MapRoute(
+//                name: "PetListCreate",
+//                url: "{controller}/{action}/{userId}"
+//            );
 
             routes.MapRoute(
                 name: "Default",

@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using log4net;
 using Week5_WebApp1.Models.View;
 using Week5_WebApp1.Services;
 
@@ -7,6 +9,7 @@ namespace Week5_WebApp1.Controllers
     public class PetController : Controller
     {
         private readonly IPetService _petService;
+        private readonly ILog _log = log4net.LogManager.GetLogger(typeof(PetController));
 
         public PetController(IPetService petService)
         {
@@ -15,6 +18,8 @@ namespace Week5_WebApp1.Controllers
 
         public ActionResult List(int userId)
         {
+            _log.Debug("Getting list of pets for user: " + userId);
+
             ViewBag.UserId = userId;
 
             var petViewModels = _petService.GetPetsForUser(userId);
@@ -33,9 +38,19 @@ namespace Week5_WebApp1.Controllers
         [HttpPost]
         public ActionResult Create(PetViewModel petViewModel)
         {
+            _log.Info("Creating pet");
+
             if (ModelState.IsValid)
             {
-                _petService.SavePet(petViewModel);
+                try
+                {
+                    _petService.SavePet(petViewModel);
+                }
+                catch (Exception ex)
+                {
+                    _log.Error("Failed to save pet.", ex);
+                    throw;
+                }
 
                 return RedirectToAction("List", new {UserId = petViewModel.UserId});
             }

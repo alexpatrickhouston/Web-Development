@@ -39,6 +39,8 @@ namespace Week5_WebApp1.Services
 
         public void SavePet(PetViewModel petViewModel)
         {
+            //throw new Exception("Test Exception");
+
             var pet = MapToPet(petViewModel);
 
             _repository.SavePet(pet);

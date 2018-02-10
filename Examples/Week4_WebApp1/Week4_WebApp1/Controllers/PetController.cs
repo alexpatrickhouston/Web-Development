@@ -38,6 +38,27 @@ namespace Week4_WebApp1.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var pet = GetPet(id);
+
+            return View(pet);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(PetViewModel petViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                UpdatePet(petViewModel);
+
+                return RedirectToAction("List");
+            }
+
+            return View();
+        }
+
         public ActionResult Delete(int id)
         {
             var pet = GetPet(id);
@@ -82,6 +103,17 @@ namespace Week4_WebApp1.Controllers
             dbContext.SaveChanges();
         }
 
+        private void UpdatePet(PetViewModel petViewModel)
+        {
+            var dbContext = new AppDbContext();
+
+            var pet = dbContext.Pets.Find(petViewModel.Id);
+
+            CopyToPet(petViewModel, pet);
+
+            dbContext.SaveChanges();
+        }
+
         private void DeletePet(int id)
         {
             var dbContext = new AppDbContext();
@@ -119,6 +151,16 @@ namespace Week4_WebApp1.Controllers
                 VetName = pet.VetName,
                 UserId = pet.UserId
             };
+        }
+
+        private void CopyToPet(PetViewModel petViewModel, Pet pet)
+        {
+            pet.Id = petViewModel.Id; 
+            pet.Name = petViewModel.Name;
+            pet.Age = petViewModel.Age;
+            pet.NextCheckup = petViewModel.NextCheckup;
+            pet.VetName = petViewModel.VetName;
+            pet.UserId = petViewModel.UserId;
         }
     }
 }
