@@ -67,7 +67,7 @@ namespace Week8_WebApp1.Services
                 Age = petViewModel.Age,
                 NextCheckup = petViewModel.NextCheckup,
                 VetName = petViewModel.VetName,
-                UserId = petViewModel.UserId
+                UserId = userId
             };
         }
 
@@ -79,8 +79,7 @@ namespace Week8_WebApp1.Services
                 Name = pet.Name,
                 Age = pet.Age,
                 NextCheckup = pet.NextCheckup,
-                VetName = pet.VetName,
-                UserId = pet.UserId
+                VetName = pet.VetName
             };
 
             petViewModel.CheckupAlert = (petViewModel.NextCheckup - DateTime.Now).Days < 14;
@@ -95,7 +94,6 @@ namespace Week8_WebApp1.Services
             pet.Age = petViewModel.Age;
             pet.NextCheckup = petViewModel.NextCheckup;
             pet.VetName = petViewModel.VetName;
-            pet.UserId = petViewModel.UserId;
         }
     }
 }

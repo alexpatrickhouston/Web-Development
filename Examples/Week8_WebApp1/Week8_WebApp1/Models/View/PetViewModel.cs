@@ -26,6 +26,6 @@ namespace Week8_WebApp1.Models.View
 
         public bool CheckupAlert { get; set; }
 
-        public string UserId { get; set; }
+        //public string UserId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Week8_WebApp1.Models;
 
 namespace Week8_WebApp1.Data.Entities
@@ -17,7 +18,9 @@ namespace Week8_WebApp1.Data.Entities
 
         public string VetName { get; set; }
 
+        [ForeignKey("User")]
         public string UserId { get; set; }
+
         public ApplicationUser User { get; set; }
     }
 }
